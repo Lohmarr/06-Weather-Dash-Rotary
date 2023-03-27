@@ -1,0 +1,29 @@
+p, .city-button {
+    display: inline-block;
+    width: 20%; /* Set the width to a fixed value */
+    font-size: larger;
+  }
+
+.forecast-day {
+    margin: 2vh 0 2vh 0;
+    border-radius: 3px;
+    text-align: center;
+}
+
+aside{
+    width: 100%;
+}
+
+.city-button {
+    display: inline;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 2%;
+}
+
+img {
+    display: flex;
+    justify-content: space-between;
+    background-color: aquamarine;
+    margin: 2%;
+}

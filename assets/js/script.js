@@ -1,10 +1,10 @@
-const searchForm = document.querySelector('#search-form');
-const cityInput = document.querySelector('#city-input');
-const currentWeather = document.querySelector('#current-weather');
-const forecast = document.querySelector('#forecast');
-const searchHistory = document.querySelector('#search-history');
+const searchForm = document.querySelector("#search-form");
+const cityInput = document.querySelector("#city-input");
+const currentWeather = document.querySelector("#current-weather");
+const forecast = document.querySelector("#forecast");
+const searchHistory = document.querySelector("#search-history");
 
-const apiKey = '8815fa9153dba675fe64e2b5f006967b';
+const apiKey = "8815fa9153dba675fe64e2b5f006967b";
 
 // City User Input
 function search() {
@@ -12,30 +12,32 @@ function search() {
 
   let city = cityInput.value.toUpperCase().trim();
 
-  if (city === '') {
-    alert('Please enter a city name');
+  if (city === "") {
+    alert("Please enter a city name");
     return;
   }
 
   addToSearchHistory(city);
 
-  fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=imperial`)
-    .then(response => response.json())
-    .then(data => {
+  fetch(
+    `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=imperial`
+  )
+    .then((response) => response.json())
+    .then((data) => {
       displayCurrentWeather(data.list[0]);
 
       displayForecast(data.list.filter((data, index) => index % 8 === 0));
     })
-    .catch(error => console.error(error));
+    .catch((error) => console.error(error));
 }
 
-searchForm.addEventListener('submit', (event) => {
-  search()
+searchForm.addEventListener("submit", (event) => {
+  search();
 });
 
 // display current weather
 function displayCurrentWeather(weatherData) {
-  let cityName = cityInput.value.toUpperCase()
+  let cityName = cityInput.value.toUpperCase();
 
   let html = `
     <h2>${cityName} (${weatherData.dt_txt}) <img src="http://openweathermap.org/img/wn/${weatherData.weather[0].icon}.png" alt="${weatherData.weather[0].description}"></h2>
@@ -48,10 +50,10 @@ function displayCurrentWeather(weatherData) {
 
 // display 5-day forecast
 function displayForecast(forecastData) {
-  let html = '<h2>5-Day Forecast</h2>';
-  forecastData.forEach(data => {
+  let html = "<h2>5-Day Forecast</h2>";
+  forecastData.forEach((data) => {
     html += `
-      <div>
+      <div class='forecast-day notice'>
         <p>Date: ${data.dt_txt}</p>
         <p>Temperature: ${data.main.temp} °F</p>
         <p>Humidity: ${data.main.humidity}%</p>
@@ -65,40 +67,43 @@ function displayForecast(forecastData) {
 
 // add city to search history
 function addToSearchHistory(city) {
-  let searchStorage = JSON.parse(localStorage.getItem('searchHistory')) || [];
+  let searchStorage = JSON.parse(localStorage.getItem("searchHistory")) || [];
 
   if (!searchStorage.includes(city)) {
     searchStorage.push(city.toUpperCase());
-    localStorage.setItem('searchHistory', JSON.stringify(searchStorage));
+    localStorage.setItem("searchHistory", JSON.stringify(searchStorage));
 
     let html = `<li class='city-button'><button>${city}</button></li>`;
     searchHistory.innerHTML += html;
   }
 
-  let cityButtons = document.querySelectorAll('.city-button');
+  let cityButtons = document.querySelectorAll(".city-button");
 
-  cityButtons.forEach(button => {
-    button.addEventListener('click', () => {
+  cityButtons.forEach((button) => {
+    button.addEventListener("click", () => {
       cityInput.value = button.textContent;
-      search()
+      search();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   });
 }
 
 // load search history from local storage
-if (localStorage.getItem('searchHistory')) {
-  let searchStorage = JSON.parse(localStorage.getItem('searchHistory')) || []
+if (localStorage.getItem("searchHistory")) {
+  let searchStorage = JSON.parse(localStorage.getItem("searchHistory")) || [];
 
-  searchStorage.forEach(city => {
+  searchStorage.forEach((city) => {
     let html = `<li class='city-button'><button>${city}</button></li>`;
     searchHistory.innerHTML += html;
-  })
+  });
 
-  let cityButtons = document.querySelectorAll('.city-button');
+  let cityButtons = document.querySelectorAll(".city-button");
 
-  cityButtons.forEach(button => {
-    button.addEventListener('click', () => {
+  cityButtons.forEach((button) => {
+    button.addEventListener("click", () => {
       cityInput.value = button.textContent;
-      search()
+      search();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-})}
+  });
+}
