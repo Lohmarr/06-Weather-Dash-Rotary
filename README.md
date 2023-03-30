@@ -1,5 +1,7 @@
 # Weather Dashboard
 
+![Website Screenshot](./assets/imgs/weatherdashboard.png)
+
 The Weather Dashboard is a web application that allows users to search for current weather conditions and a 5-day forecast for any city in the world. It was built using HTML, CSS, and JavaScript, and utilizes the OpenWeather API to retrieve weather data.
 
 ## Features
