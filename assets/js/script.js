@@ -17,22 +17,29 @@ function search() {
     return;
   }
 
-  addToSearchHistory(city);
-
   fetch(
     `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=imperial`
   )
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Invalid city name");
+      }
+      addToSearchHistory(city);
+      return response.json();
+    })
     .then((data) => {
       displayCurrentWeather(data.list[0]);
 
       displayForecast(data.list.filter((data, index) => index % 8 === 0));
     })
-    .catch((error) => console.error(error));
-}
+    .catch((error) => {
+      alert('Invalid city name!')
+      console.error(error);
+    });
+  }
 
 searchForm.addEventListener("submit", (event) => {
-  search();
+  search(event);
 });
 
 // display current weather
@@ -83,7 +90,7 @@ function addToSearchHistory(city) {
     button.addEventListener("click", () => {
       cityInput.value = button.textContent;
       search();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
   });
 }
@@ -103,7 +110,7 @@ if (localStorage.getItem("searchHistory")) {
     button.addEventListener("click", () => {
       cityInput.value = button.textContent;
       search();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
   });
 }
